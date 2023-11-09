@@ -3,45 +3,47 @@ import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
-    public static String[] getDatesWithoutWeekends() {
+    public static LocalDate[] getDatesWithoutWeekends() {
         LocalDate today = LocalDate.now();
         LocalDate nextYear = today.plusYears(1);
-        
+
         if (isWeekend(today)) {
             today = findNearestWeekday(today);
         }
-        
+
         if (isWeekend(nextYear)) {
             nextYear = findNearestWeekday(nextYear);
         }
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
-        String formattedToday = today.format(formatter);
-        String formattedNextYear = nextYear.format(formatter);
-        
-        String[] dates = {formattedToday, formattedNextYear};
-        return dates;
+
+        return new LocalDate[] {today, nextYear};
     }
 
-    public static String[] getNextTwoDatesWithoutWeekends() {
+    public static LocalDate[] getNextTwoDatesWithoutWeekends() {
         LocalDate[] previousDates = getDatesWithoutWeekends();
         LocalDate nextDate1 = previousDates[0].plusDays(2);
         LocalDate nextDate2 = previousDates[1].plusDays(2);
-        
+
         if (isWeekend(nextDate1)) {
             nextDate1 = findNearestWeekday(nextDate1);
         }
-        
+
         if (isWeekend(nextDate2)) {
             nextDate2 = findNearestWeekday(nextDate2);
         }
-        
+
+        return new LocalDate[] {nextDate1, nextDate2};
+    }
+
+    public static String[] getFormattedDates() {
+        LocalDate[] dates = getDatesWithoutWeekends();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
-        String formattedNextDate1 = nextDate1.format(formatter);
-        String formattedNextDate2 = nextDate2.format(formatter);
-        
-        String[] dates = {formattedNextDate1, formattedNextDate2};
-        return dates;
+        return new String[] {dates[0].format(formatter), dates[1].format(formatter)};
+    }
+
+    public static String[] getFormattedNextTwoDates() {
+        LocalDate[] nextDates = getNextTwoDatesWithoutWeekends();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
+        return new String[] {nextDates[0].format(formatter), nextDates[1].format(formatter)};
     }
 
     private static boolean isWeekend(LocalDate date) {
@@ -57,9 +59,9 @@ public class DateUtils {
     }
 
     public static void main(String[] args) {
-        String[] dates = getDatesWithoutWeekends();
-        String[] nextDates = getNextTwoDatesWithoutWeekends();
-        
+        String[] dates = getFormattedDates();
+        String[] nextDates = getFormattedNextTwoDates();
+
         System.out.println("Today's date without weekends: " + dates[0]);
         System.out.println("Date after one year without weekends: " + dates[1]);
         System.out.println("Next two dates (2 days after):");
