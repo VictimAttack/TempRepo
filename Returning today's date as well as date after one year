@@ -36,13 +36,13 @@ public class DateUtils {
 
     public static String[] getFormattedDates() {
         LocalDate[] dates = getDatesWithoutWeekends();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         return new String[] {dates[0].format(formatter), dates[1].format(formatter)};
     }
 
     public static String[] getFormattedNextTwoDates() {
         LocalDate[] nextDates = getNextTwoDatesWithoutWeekends();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         return new String[] {nextDates[0].format(formatter), nextDates[1].format(formatter)};
     }
 
